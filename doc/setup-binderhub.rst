@@ -438,10 +438,6 @@ the following configuration in your ``config.yaml`` file::
 
     dind:
       enabled: true
-      daemonset:
-        image:
-          name: docker
-          tag: 18.09.2-dind
 
 If you plan to host multiple BinderHub deployments on the same kubernetes
 cluster, you'll also need to isolate the host socket and library directory
