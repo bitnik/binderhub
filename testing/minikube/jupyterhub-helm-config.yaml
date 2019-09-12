@@ -71,3 +71,11 @@ proxy:
     type: NodePort
     nodePorts:
       http: 30123
+
+scheduling:
+  userScheduler:
+    enabled: false
+  podPriority:
+    enabled: false
+  userPlaceholder:
+    enabled: false
