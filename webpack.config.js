@@ -6,10 +6,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     mode: 'production',
     context: path.resolve(__dirname, 'binderhub/static'),
-    entry: "./js/index.js",
+    entry: {
+        index: './js/index.js',
+        loading: './js/loading.js',
+      },
     output: {
         path: path.resolve(__dirname, 'binderhub/static/dist/'),
-        filename: "bundle.js",
+        filename: '[name].bundle.js',
         publicPath: '/static/dist/'
     },
     plugins: [
@@ -18,7 +21,7 @@ module.exports = {
             jQuery: 'jquery',
         }),
         new MiniCssExtractPlugin({
-            filename: 'styles.css'
+            filename: '[name].styles.css'
         }),
     ],
     module: {

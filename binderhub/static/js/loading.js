@@ -1,3 +1,13 @@
+import 'bootstrap';
+
+import { setUpLog } from './src/log';
+import { build } from './src/build';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap-theme.min.css';
+import '../index.css';
+import '../loading.css';
+
 // Cycle through helpful messages on the loading page
 const help_messages = [
     'New to Binder? Check out the <a target="_blank" href="https://mybinder.readthedocs.io/en/latest/">Binder Documentation</a> for more information.',
@@ -28,3 +38,39 @@ export function nextHelpText () {
         text.html(msg);
     }
 }
+
+
+function loadingMain(providerSpec) {
+  var log = setUpLog();
+  // retrieve (encoded) filepath/urlpath from URL
+  // URLSearchParams.get returns the decoded value,
+  // that is good because it is the real value and '/'s will be trimmed in `launch`
+  var params = new URL(location.href).searchParams;
+  var pathType, path;
+  path = params.get('urlpath');
+  if (path) {
+    pathType = 'url';
+  } else {
+    path = params.get('filepath');
+    if (path) {
+      pathType = 'file';
+    }
+  }
+  build(providerSpec, log, path, pathType);
+
+  // Looping through help text every few seconds
+  const launchMessageInterval = 6 * 1000
+  setInterval(nextHelpText, launchMessageInterval);
+
+  // If we have a long launch, add a class so we display a long launch msg
+  const launchTimeout = 120 * 1000
+  setTimeout(() => {
+    $('div#loader-links p.text-center').addClass("longLaunch");
+    nextHelpText();
+  }, launchTimeout)
+
+  return false;
+}
+
+// export entrypoints
+window.loadingMain = loadingMain;
